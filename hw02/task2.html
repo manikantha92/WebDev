@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>HW02 Task 2</title>
+  <style>
+    #bottom {
+      position: fixed;
+      bottom: 0;
+    }
+  </style>
+  <script>
+    function popUp() {
+
+      var number = document.getElementById('num').innerHTML;
+      alert(number);
+    }
+
+    function addOne() {
+      var number = document.getElementById('num').innerHTML;
+      document.getElementById('num').innerHTML = "";
+      document.getElementById('num').innerHTML = parseInt(number) + 1;
+    }
+
+    function addPara() {
+
+      var para = document.createElement("p");
+      var number = document.getElementById('num').innerHTML;
+      var node = document.createTextNode(number);
+      para.appendChild(node);
+
+      var element = document.getElementById("bottom");
+      element.appendChild(para);
+    }
+  </script>
+</head>
+
+<body>
+  <div id="main">
+    <h1 id="num"> 10 </h1>
+
+    <p> <button type="button" id="alert" onclick="popUp()">Display current number</button> </p>
+    <p> <button type="button" id="increment" onclick="addOne()">Increment the number</button> </p>
+    <p> <button type="button" id="addP" onclick="addPara()">Add new paragraph</button> </p>
+  </div>
+
+  <div id="bottom">
+  </div>
+</body>
+
+</html>

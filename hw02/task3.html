@@ -1,0 +1,86 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>HW02 Task 3</title>
+  <style>
+    #leftCol {
+      float: left;
+      width:  33.33%;
+
+    }
+    #rightCol{
+      width: 66.67%;
+      float: right;
+    }
+    #pageTitle{
+      text-align: center;
+    }
+
+    .clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+}
+  </style>
+  <script>
+
+    function beerFn() {
+
+        document.getElementById('displayPara').innerHTML = "99 bottles of beer on the wall, 99 bottles of beer. Take one down, pass it around, 98 bottles of beer on the wall..."
++ "<br> 98 bottles of beer on the wall, 98 bottles of beer. Take one down, pass it around, 97 bottles of beer on the wall..."
++ "<br>97 bottles of beer on the wall, 97 bottles of beer. Take one down, pass it around, 96 bottles of beer on the wall..."
++ "<br>96 bottles of beer on the wall, 96 bottles of beer. Take one down, pass it around, 95 bottles of beer on the wall.";
+  }
+
+function firstFn() {
+
+        var loremElement = document.getElementById('displayPara');
+        loremElement.innerHTML = "";
+        loremElement.innerHTML = "<p>In publishing and graphic design, lorem"
+         + "ipsum is a filler text or greeking commonly used to demonstrate the"
+         + "textual elements of a graphic document or visual presentation. "
+         +"Replacing meaningful content with placeholder text allows designers"
+         +"to design the form of the content before the content itself has been"
+         +"produced.</p><p>The lorem ipsum text is typically a scrambled section"
+         +"  of De finibus bonorum et malorum, a 1st-century BC Latin text by"
+         + "Cicero, with words altered, added, and removed to make it nonsensical"
+         + ", improper Latin.</p><p>A variation of the ordinary lorem ipsum text"
+         + "has been used in typesetting since the 1960s or earlier, when it was"
+         + "popularized by advertisements for Letraset transfer sheets. It was"
+         + "introduced to the Information Age in the mid-1980s by Aldus Corporation,"
+         + "which employed it in graphics and word-processing templates for its"
+         + "desktop publishing program PageMaker.</p><p>Lorem ipsum dolor sit "
+         + "amet,consectetur adipiscing elit, sed do eiusmod occaecat cupidatat"
+         + "non proident, sunt in culpa qui officia deserun mollit anim id est "
+         + "laborum.</p>";
+
+}
+
+function lastThing() {
+
+          document.getElementById('displayPara').innerHTML = "This is the last thing.";
+    }
+
+
+  </script>
+</head>
+
+<body onload="firstFn()">
+  <h1 id="pageTitle">HW03 TASK THREE</h1>
+<div id="main">
+  <div id="leftCol">
+    <p> <a href="#"  onclick="firstFn()">Lorem Ipsem</a> </p>
+    <p> <a href="#" onclick="beerFn()">99 Bottles</a></p>
+    <p> <a href="#"  onclick="lastThing()">Last Thing</a> </p>
+  </div>
+
+  <div id="rightCol">
+    <p id="displayPara">
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod occaecat cupidatat non proident, sunt in culpa qui officia deserun mollit anim id est laborum.
+  </p>
+</div>
+</body>
+</html>
