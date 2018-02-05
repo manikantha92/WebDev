@@ -43,7 +43,7 @@ defmodule Calc do
           evalParenthesis(tail, operandStack, operatorStack)
 
         true ->
-          exit("not an operator")
+          raise "Invalid symbol"
       end
     end
   end
@@ -53,7 +53,7 @@ defmodule Calc do
     case stack do
       [] -> nil
       [top | _] -> top
-      _ -> raise "Empty Stack"
+      _ -> raise "No elements in stack"
     end
   end
 
@@ -67,7 +67,7 @@ defmodule Calc do
       "-" -> (num1 - num2) |> Kernel.inspect()
       "*" -> (num1 * num2) |> Kernel.inspect()
       "/" -> div(num1, num2) |> Kernel.inspect()
-      _ -> raise "not an operator"
+      _ -> raise "Invalid operator"
     end
   end
 
