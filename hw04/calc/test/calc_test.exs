@@ -3,11 +3,12 @@ defmodule CalcTest do
   doctest Calc
 
   test "eval" do
-
     assert Calc.eval(["1", "+", "3", "*", "3", "+", "1"], [], []) ==
-      ["+", "+", "1", "*", "3", "3", "1"]
+             ["+", "+", "1", "*", "3", "3", "1"]
+
     assert Calc.eval(["24", "/", "6", "+", "(", "5", "-", "4", ")"], [], []) ==
-      ["+", "-", "4", "5", "/", "6", "24"]
+             ["+", "-", "4", "5", "/", "6", "24"]
+
     assert Calc.eval(["(", "8", "+", "9", "-", "3", ")"], [], []) == ["+", "-", "3", "9", "8"]
     assert Calc.eval(["(", "4", "/", "2", ")"], [], []) == ["/", "4", "2"]
     assert Calc.eval(["8", "-", "7"], [], []) == ["-", "8", "7"]
@@ -16,22 +17,21 @@ defmodule CalcTest do
     assert Calc.eval(["20", "/", "4"], [], []) == ["/", "4", "20"]
     assert Calc.eval(["0"], [], []) == ["0"]
     assert Calc.eval([], [], []) == []
-
-    end
+  end
 
   test "evalPostFixExp" do
     assert ["+", "-", "4", "5", "/", "6", "24"]
-    |> Enum.reverse()
-    |> Calc.evalPostFixExp([]) == "5"
+           |> Enum.reverse()
+           |> Calc.evalPostFixExp([]) == "5"
 
     assert ["+", "+", "1", "*", "3", "3", "1"]
-    |> Enum.reverse()
-    |> Calc.evalPostFixExp([]) == "11"
+           |> Enum.reverse()
+           |> Calc.evalPostFixExp([]) == "11"
+
     assert ["+", "8", "7"] |> Enum.reverse() |> Calc.evalPostFixExp([]) == "15"
     assert ["*", "5", "5"] |> Enum.reverse() |> Calc.evalPostFixExp([]) == "25"
     assert ["/", "2", "4"] |> Enum.reverse() |> Calc.evalPostFixExp([]) == "2"
   end
-
 
   def splitString(string) do
     string |> String.split("") |> Enum.filter(fn x -> x != "" && x != " " end)
