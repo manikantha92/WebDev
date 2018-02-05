@@ -75,8 +75,9 @@ defmodule CalcTest do
 
   test "isInteger" do
     assert Calc.isInteger("0") == true
-    assert Calc.isInteger("A") == false
-    # truncates
-    assert Calc.isInteger("2.0") == true
+    assert Calc.isInteger("@") == false
+    assert Calc.isInteger("X") == false
+    assert Calc.isInteger("abc") == false
+    assert Calc.isInteger("3.14") == true
   end
 end
