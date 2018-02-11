@@ -1,0 +1,48 @@
+
+/* This file is for your main application css. */
+
+@import "bootstrap";
+
+.card {
+  background-color: Turquoise;
+  width: 100px;
+  border: 1px solid black;
+  text-align: center;
+  font-size: 50px;
+  font-family: courier;
+  font-size: 160%;
+}
+
+button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+
+h1 {
+    color: grey;
+    font-family: verdana;
+    font-size: 300%;
+
+}  
+
+
+
+td {
+
+background-color: blue;
+}
+.card span {
+  line-height: 100px;
+}
+
+
+.side { padding: 4ex; text-align: center; }
+h1 { text-align: center; }
+
+
