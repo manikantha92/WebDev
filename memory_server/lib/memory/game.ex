@@ -80,7 +80,7 @@ defmodule Memory.Game do
       if String.equivalent?(first["value"], second["value"]) do
         Map.replace!(game, :paired, true)
         :timer.sleep(500)
-        completed?(game)
+        isCompleted(game)
       else
         :timer.sleep(1000)
         flipOver(game)
@@ -89,7 +89,7 @@ defmodule Memory.Game do
     resetCards(game)
   end
 
-  def completed?(game) do
+  def isCompleted(game) do
     firstRow = game[:firstCard]["row"]
     firstCol = game[:firstCard]["col"]
     secondRow = game[:secondCard]["row"]
@@ -147,3 +147,5 @@ defmodule Memory.Game do
     game.new()
   end
 end
+
+#// Attriution:https://github.com/NatTuck/hangman2

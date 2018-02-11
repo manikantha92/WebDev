@@ -4,7 +4,7 @@
     <p> Enter the name of the Game you want to join so you can play from where you left</p>
     <p><input type="text" class="game-input" id="game-input"></p>
 
-    <button onclick="addName()">Join Game</button
+    <button onclick="addName()" >Join Game</button>
   </div>
   <script>
   function addName() {

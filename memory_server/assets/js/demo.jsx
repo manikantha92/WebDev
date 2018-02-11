@@ -38,7 +38,7 @@ class Demo extends React.Component {
     this.channel.push("matched", {matched: "game"}).receive("ok", this.gotView.bind(this));
   }
 
-  resetBuilder(e) {
+  resetMemory(mem) {
     this.channel.push("reset", {reset: "game"}).receive("ok", this.gotView.bind(this));
   }
 
@@ -67,15 +67,18 @@ class Demo extends React.Component {
         </tbody>
       </table>
       <ShowClicks state={this.state}/>
-      <Button onClick={() => this.resetBuilder(this)}>
+      <button onClick={() => this.resetMemory(this)}>
         Reset
-      </Button>
+      </button>
     </div>);
   }
 }
 
 function ShowClicks(props) {
   let state = props.state;
-  return <h4>Number of Clicks: {state.count}
-  </h4>;
+  return <div class="clickCount"><p>Number of Clicks: {state.count}
+  </p></div>;
 }
+
+
+// Attriution:https://github.com/NatTuck/hangman2

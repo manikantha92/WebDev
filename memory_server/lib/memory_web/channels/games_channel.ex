@@ -47,3 +47,5 @@ defmodule MemoryWeb.GamesChannel do
     true
   end
 end
+
+#Attriution:https://github.com/NatTuck/hangman2
