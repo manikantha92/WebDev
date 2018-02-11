@@ -1,190 +1,81 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {Table, Tr, Td, Button} from 'reactstrap';
+import {Button} from 'reactstrap';
 
-export default function run_demo(root) {
-  tick,ReactDOM.render(<Layout/>, root);
+export default function run_demo(root, channel) {
+  ReactDOM.render(<Demo channel={channel}/>, root);
 }
 
-// function to shuffle the array of alphabets
-function shuffle(a) {
-  var j,
-    x,
-    i;
-  for (i = a.length - 1; i > 0; i--) {
-    j = Math.floor(Math.random() * (i + 1));
-    x = a[i];
-    a[i] = a[j];
-    a[j] = x;
-  }
-}
-
-let clickable = false; // variable to keep track of when to disable the clicks 
-let all=0;
-const  gameStates = {
-  FIRST: "Open the first card",
-  SECOND: "Open the second card",
-};
-
-const tick = <span>&#10004;</span>; // variable to display a tick
-
-
-// creating an array
-function createArray(x, y) {
-  return Array.apply(null, Array(x)).map(function(e) {
-    return Array(y);
-  });
-}
-
-
-//initializing the game
-function startGame() {
-  var cards = createArray(4, 4);
-  var alphabets = [
-    "A",
-    "B",
-    "C",
-    "D",
-    "E",
-    "F",
-    "G",
-    "H",
-    "A",
-    "B",
-    "C",
-    "D",
-    "E",
-    "F",
-    "G",
-    "H"
-  ];
-  shuffle(alphabets);
-  var cardNumber = 0;
-  for (var rowIndex = 0; rowIndex < 4; rowIndex++) {
-    for (var columnIndex = 0; columnIndex < 4; columnIndex++) {
-      cards[rowIndex][columnIndex] = {
-        cardValue: alphabets[cardNumber],
-        flipped: false,
-        rowIndex: rowIndex,
-        columnIndex: columnIndex
-      };
-      cardNumber++;
-    }
-
-  }
-  return cards;
-}
-
-class Card extends React.Component {
-  render() {
-    return <div className="card">
-      <span>{
-          this.props.card.flipped
-            ? this.props.card.cardValue
-            : "?"
-        }</span>
-    </div>;
-  }
-}
-
-class Layout extends React.Component {
+var cardCount = 0;
+class Demo extends React.Component {
   constructor(props) {
     super(props);
-
+    this.channel = props.channel;
     this.state = {
-      cards: startGame(),
-      gameState: gameStates.FIRST,
-      firstCard: null,
-      secondCard: null,
-      clickCount: 0
+      initialGameState: [],
+      count: 0
     };
+    this.channel.join().receive("ok", this.gotView.bind(this)).receive("error", resp => {
+      console.log("Unable to join", resp)
+    });
   }
 
-  cardClick(card) {
-    if (!card.flipped && !clickable) {
+  gotView(view) {
+    console.log("New view", view);
+    this.setState(view.game);
+  }
 
-      switch (this.state.gameState) {
-
-        case gameStates.FIRST:
-          this.state.cards[card.rowIndex][card.columnIndex].flipped = true;
-          this.setState({
-            cards: this.state.cards,
-            firstCard: card,
-            gameState: gameStates.SECOND,
-            clickCount: this.state.clickCount + 1
-          });
-          break;
-
-        case gameStates.SECOND:
-          this.state.cards[card.rowIndex][card.columnIndex].flipped = true;
-          this.setState({
-            cards: this.state.cards,
-            gameState: gameStates.FIRST,
-            clickCount: this.state.clickCount + 1
-          });
-          if (this.state.firstCard.cardValue == card.cardValue) {
-            clickable = true;
-
-            setTimeout(() => {
-              clickable = false;
-              this.state.cards[this.state.firstCard.rowIndex][this.state.firstCard.columnIndex].cardValue = tick;
-              this.state.cards[card.rowIndex][card.columnIndex].cardValue = tick;
-              this.setState({cards: this.state.cards, gameState: gameStates.FIRST});
-            }, 1000)
-            all = all + 1;
-          } else {
-
-            clickable = true;
-            setTimeout(() => {
-              clickable = false;
-              this.state.cards[this.state.firstCard.rowIndex][this.state.firstCard.columnIndex].flipped = false;
-              this.state.cards[card.rowIndex]
-              [card.columnIndex].flipped = false;
-              this.setState({cards: this.state.cards, firstCard: null, gameState: gameStates.FIRST});
-
-            }, 1000)
-
-            break;
-
-          }
-
-      }
+  sendOpenCard(card) {
+    cardCount = cardCount + 1;
+    let newgame = this.channel.push("startGame", {card: card}).receive("ok", this.gotView.bind(this));
+    if (cardCount == 2) {
+      this.isMatched();
+      cardCount = 0;
     }
-
   }
 
+  isMatched() {
+    this.channel.push("matched", {matched: "game"}).receive("ok", this.gotView.bind(this));
+  }
 
-  restartGame() {
-    this.setState({cards: startGame(), game: gameStates.FIRST, firstCard: null, secondCard: null, clickCount: 0});
+  resetBuilder(e) {
+    this.channel.push("reset", {reset: "game"}).receive("ok", this.gotView.bind(this));
   }
 
   render() {
+    //go to each row and access each of the values from the object
+    let cardlist = this.state.initialGameState.map((cardrow, rowindex) => <tr key={rowindex}>
+      {
+        cardrow.map((card, i) => <td key={i} onClick={() => this.sendOpenCard(card)}>
+          <div className={card.done
+              ? "card done"
+              : "card"}>
+            <p>{
+                card.flipped
+                  ? card.value
+                  : "?"
+              }</p>
+          </div>
+        </td>)
+      }
+    </tr>);
 
-    if (all == 8) {
-      setTimeout(() => {
-        all = 0;
-     <div>"hello"</div>
-
-      }, 3000)
-    }
-    const cardsRendered = this.state.cards.map((rowOfCards, rowIndex) =>< tr > {
-      rowOfCards.map((card, indexOfCardInRow) =>< td onClick = {
-        () => this.cardClick(card)
-      } > <div><Card card={card}/></div></td>)
-    }</tr>);
-    return <div>
+    return (<div>
       <table>
-        <tbody>{cardsRendered}</tbody>
+        <tbody>
+          {cardlist}
+        </tbody>
       </table>
-      <div>
-        <div>
-          <p>No. of clicks:<b>{this.state.clickCount}</b>
-          </p>
-        </div>
-        <button onClick={() => this.restartGame()}>RESET</button>
-      </div>
-    </div>
+      <ShowClicks state={this.state}/>
+      <Button onClick={() => this.resetBuilder(this)}>
+        Reset
+      </Button>
+    </div>);
   }
 }
 
-
+function ShowClicks(props) {
+  let state = props.state;
+  return <h4>Number of Clicks: {state.count}
+  </h4>;
+}
