@@ -1,190 +1,85 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {Table, Tr, Td, Button} from 'reactstrap';
+import { Button } from 'reactstrap';
 
-export default function run_demo(root) {
-  tick,ReactDOM.render(<Layout/>, root);
+export default function run_demo(root,channel) {
+  ReactDOM.render(<Demo channel={channel} />, root);
 }
-
-// function to shuffle the array of alphabets
-function shuffle(a) {
-  var j,
-    x,
-    i;
-  for (i = a.length - 1; i > 0; i--) {
-    j = Math.floor(Math.random() * (i + 1));
-    x = a[i];
-    a[i] = a[j];
-    a[j] = x;
-  }
-}
-
-let clickable = false; // variable to keep track of when to disable the clicks 
-let all=0;
-const  gameStates = {
-  FIRST: "Open the first card",
-  SECOND: "Open the second card",
-};
-
-const tick = <span>&#10004;</span>; // variable to display a tick
-
-
-// creating an array
-function createArray(x, y) {
-  return Array.apply(null, Array(x)).map(function(e) {
-    return Array(y);
-  });
-}
-
-
-//initializing the game
-function startGame() {
-  var cards = createArray(4, 4);
-  var alphabets = [
-    "A",
-    "B",
-    "C",
-    "D",
-    "E",
-    "F",
-    "G",
-    "H",
-    "A",
-    "B",
-    "C",
-    "D",
-    "E",
-    "F",
-    "G",
-    "H"
-  ];
-  shuffle(alphabets);
-  var cardNumber = 0;
-  for (var rowIndex = 0; rowIndex < 4; rowIndex++) {
-    for (var columnIndex = 0; columnIndex < 4; columnIndex++) {
-      cards[rowIndex][columnIndex] = {
-        cardValue: alphabets[cardNumber],
-        flipped: false,
-        rowIndex: rowIndex,
-        columnIndex: columnIndex
-      };
-      cardNumber++;
-    }
-
-  }
-  return cards;
-}
-
-class Card extends React.Component {
-  render() {
-    return <div className="card">
-      <span>{
-          this.props.card.flipped
-            ? this.props.card.cardValue
-            : "?"
-        }</span>
-    </div>;
-  }
-}
-
-class Layout extends React.Component {
+var c = 0;
+class Demo extends React.Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      cards: startGame(),
-      gameState: gameStates.FIRST,
-      firstCard: null,
-      secondCard: null,
-      clickCount: 0
-    };
+    this.channel = props.channel;
+    this.state = { skel: [] , count: 0 };
+    this.channel.join()
+        .receive("ok", this.gotView.bind(this))
+        .receive("error", resp => { console.log("Unable to join", resp) });
   }
 
-  cardClick(card) {
-    if (!card.flipped && !clickable) {
-
-      switch (this.state.gameState) {
-
-        case gameStates.FIRST:
-          this.state.cards[card.rowIndex][card.columnIndex].flipped = true;
-          this.setState({
-            cards: this.state.cards,
-            firstCard: card,
-            gameState: gameStates.SECOND,
-            clickCount: this.state.clickCount + 1
-          });
-          break;
-
-        case gameStates.SECOND:
-          this.state.cards[card.rowIndex][card.columnIndex].flipped = true;
-          this.setState({
-            cards: this.state.cards,
-            gameState: gameStates.FIRST,
-            clickCount: this.state.clickCount + 1
-          });
-          if (this.state.firstCard.cardValue == card.cardValue) {
-            clickable = true;
-
-            setTimeout(() => {
-              clickable = false;
-              this.state.cards[this.state.firstCard.rowIndex][this.state.firstCard.columnIndex].cardValue = tick;
-              this.state.cards[card.rowIndex][card.columnIndex].cardValue = tick;
-              this.setState({cards: this.state.cards, gameState: gameStates.FIRST});
-            }, 1000)
-            all = all + 1;
-          } else {
-
-            clickable = true;
-            setTimeout(() => {
-              clickable = false;
-              this.state.cards[this.state.firstCard.rowIndex][this.state.firstCard.columnIndex].flipped = false;
-              this.state.cards[card.rowIndex]
-              [card.columnIndex].flipped = false;
-              this.setState({cards: this.state.cards, firstCard: null, gameState: gameStates.FIRST});
-
-            }, 1000)
-
-            break;
-
-          }
-
-      }
-    }
-
+  gotView(view) {
+    console.log("New view", view);
+    this.setState(view.game);
+    // console.log("new game", view.game);
   }
 
+  sendGuess(tile) {
+    c = c + 1;
+    let newgame = this.channel.push("play", { tile : tile })
+        .receive("ok", this.gotView.bind(this));
+    console.log(tile);
+        if(c == 2){
+          this.checkCorrectness();
+          c = 0;
+        }
+  }
+  checkCorrectness() {
+    this.channel.push("check", { check : "game" })
+        .receive("ok", this.gotView.bind(this));
+  }
 
-  restartGame() {
-    this.setState({cards: startGame(), game: gameStates.FIRST, firstCard: null, secondCard: null, clickCount: 0});
+  resetBuilder(e){
+    this.channel.push("reset", { reset : "game" })
+        .receive("ok", this.gotView.bind(this));
   }
 
   render() {
-
-    if (all == 8) {
-      setTimeout(() => {
-        all = 0;
-     <div>"hello"</div>
-
-      }, 3000)
-    }
-    const cardsRendered = this.state.cards.map((rowOfCards, rowIndex) =>< tr > {
-      rowOfCards.map((card, indexOfCardInRow) =>< td onClick = {
-        () => this.cardClick(card)
-      } > <div><Card card={card}/></div></td>)
-    }</tr>);
-    return <div>
-      <table>
-        <tbody>{cardsRendered}</tbody>
-      </table>
+    //go to each row and access each of the values from the object
+    let tilelist = this.state.skel.map((tilerow,rowindex)=>
+      <tr key={rowindex}>
+        {tilerow.map((tile,i)=>
+          <td key={i} onClick={()=>this.sendGuess(tile)}>
+            <div className={tile.done? "tile done":"tile"}><p>{ tile.opened ? tile.value : "?"}</p></div>
+          </td>)
+        }
+      </tr>);
+      //var toggle = this.toggle.bind(this);
+    return (
       <div>
-        <div>
-          <p>No. of clicks:<b>{this.state.clickCount}</b>
-          </p>
-        </div>
-        <button onClick={() => this.restartGame()}>RESET</button>
+        <table>
+          <tbody>
+            {tilelist}
+          </tbody>
+        </table>
+        <ShowClicks state={this.state} />
+        <Button onClick={()=>this.resetBuilder(this)}> Reset </Button>
       </div>
-    </div>
+    );
   }
 }
 
+function ShowClicks(props) {
+  let state = props.state;
+  return <h4>Number of Clicks: {state.count} </h4> ;
+}
 
+
+// References:
+// https://reformatcode.com/code/javascript/using-map-function-for-two-dimensional-array---react
+// https://stackoverflow.com/questions/45583925/using-map-function-for-two-dimensional-array-react
+// https://stackoverflow.com/questions/32157286/rendering-react-components-from-array-of-objects
+// https://css-tricks.com/forums/topic/trying-to-set-state-using-with-time-delay/
+// https://codepen.io/_danko/pen/EypdyW
+// https://www.youtube.com/watch?v=cZ90wJXtsQQ
+// https://stackoverflow.com/questions/3943772/how-do-i-shuffle-the-characters-in-a-string-in-javascript
+// https://www.npmjs.com/package/shuffle-array
+// https://stackoverflow.com/questions/45200535/reset-initial-state-in-react-es6/45200755
