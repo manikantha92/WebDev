@@ -48,4 +48,4 @@ defmodule MemoryWeb.GamesChannel do
   end
 end
 
-#Attriution:https://github.com/NatTuck/hangman2
+#Attribution:https://github.com/NatTuck/hangman2

@@ -20,9 +20,8 @@ class Demo extends React.Component {
     });
   }
 
-  gotView(view) {
-    console.log("New view", view);
-    this.setState(view.game);
+  isMatched() {
+    this.channel.push("matched", {matched: "game"}).receive("ok", this.gotView.bind(this));
   }
 
   sendOpenCard(card) {
@@ -34,12 +33,13 @@ class Demo extends React.Component {
     }
   }
 
-  isMatched() {
-    this.channel.push("matched", {matched: "game"}).receive("ok", this.gotView.bind(this));
-  }
-
   resetMemory(mem) {
     this.channel.push("reset", {reset: "game"}).receive("ok", this.gotView.bind(this));
+  }
+
+  gotView(view) {
+    console.log("New view", view);
+    this.setState(view.game);
   }
 
   render() {
@@ -76,9 +76,10 @@ class Demo extends React.Component {
 
 function ShowClicks(props) {
   let state = props.state;
-  return <div class="clickCount"><p>Number of Clicks: {state.count}
-  </p></div>;
+  return <div class="clickCount">
+    <p>Number of Clicks: {state.count}
+    </p>
+  </div>;
 }
-
 
 // Attriution:https://github.com/NatTuck/hangman2

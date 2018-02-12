@@ -17,15 +17,6 @@ defmodule Memory.Game do
     |> updateCards()
   end
 
-  def updateCards(new_list) do
-    for i <- 0..3 do
-      for j <- 0..3 do
-        Map.replace!(Enum.at(Enum.at(new_list, i), j), :row, i)
-        |> Map.replace!(:col, j)
-      end
-    end
-  end
-
   def client_view(game) do
     %{
       initialGameState: game[:cards],
@@ -65,28 +56,10 @@ defmodule Memory.Game do
           |> Map.replace!(:clicks, newclicks)
           |> Map.replace!(:secondCard, card)
 
-        # isMatched?(game)
         true ->
           game
       end
     end
-  end
-
-  def isMatched(game) do
-    first = game[:firstCard]
-    second = game[:secondCard]
-
-    game =
-      if String.equivalent?(first["value"], second["value"]) do
-        Map.replace!(game, :paired, true)
-        :timer.sleep(500)
-        isCompleted(game)
-      else
-        :timer.sleep(1000)
-        flipOver(game)
-      end
-
-    resetCards(game)
   end
 
   def isCompleted(game) do
@@ -111,6 +84,32 @@ defmodule Memory.Game do
     cards2 = List.replace_at(game[:cards], secondRow, card2)
     game = Map.replace!(game, :cards, cards2)
     game
+  end
+
+  def updateCards(new_list) do
+    for i <- 0..3 do
+      for j <- 0..3 do
+        Map.replace!(Enum.at(Enum.at(new_list, i), j), :row, i)
+        |> Map.replace!(:col, j)
+      end
+    end
+  end
+
+  def isMatched(game) do
+    first = game[:firstCard]
+    second = game[:secondCard]
+
+    game =
+      if String.equivalent?(first["value"], second["value"]) do
+        Map.replace!(game, :paired, true)
+        :timer.sleep(500)
+        isCompleted(game)
+      else
+        :timer.sleep(1000)
+        flipOver(game)
+      end
+
+    resetCards(game)
   end
 
   def flipOver(game) do
@@ -148,4 +147,4 @@ defmodule Memory.Game do
   end
 end
 
-#// Attriution:https://github.com/NatTuck/hangman2
+# // Attribution:https://github.com/NatTuck/hangman2
