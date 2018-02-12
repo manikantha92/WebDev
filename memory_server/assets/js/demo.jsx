@@ -47,8 +47,8 @@ class Demo extends React.Component {
     let cardlist = this.state.initialGameState.map((cardrow, rowindex) => <tr key={rowindex}>
       {
         cardrow.map((card, i) => <td key={i} onClick={() => this.sendOpenCard(card)}>
-          <div className={card.done
-              ? "card done"
+          <div className={card.complete
+              ? "card complete"
               : "card"}>
             <p>{
                 card.flipped

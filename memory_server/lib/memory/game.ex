@@ -12,7 +12,7 @@ defmodule Memory.Game do
   def newRound() do
     ["A", "B", "C", "D", "E", "F", "G", "H", "A", "B", "C", "D", "E", "F", "G", "H"]
     |> Enum.shuffle()
-    |> Enum.map(fn x -> %{value: x, flipped: false, row: 0, col: 0, done: false} end)
+    |> Enum.map(fn x -> %{value: x, flipped: false, row: 0, col: 0, complete: false} end)
     |> Enum.chunk_every(4)
     |> updateCards()
   end
@@ -67,7 +67,7 @@ defmodule Memory.Game do
     firstCol = game[:firstCard]["col"]
     secondRow = game[:secondCard]["row"]
     secondCol = game[:secondCard]["col"]
-    newCard1 = Map.replace!(Enum.at(Enum.at(game[:cards], firstRow), firstCol), :done, true)
+    newCard1 = Map.replace!(Enum.at(Enum.at(game[:cards], firstRow), firstCol), :complete, true)
 
     card1 =
       Enum.at(game[:cards], firstRow)
@@ -75,7 +75,7 @@ defmodule Memory.Game do
 
     cards1 = List.replace_at(game[:cards], firstRow, card1)
     game = Map.replace!(game, :cards, cards1)
-    newCard2 = Map.replace!(Enum.at(Enum.at(game[:cards], secondRow), secondCol), :done, true)
+    newCard2 = Map.replace!(Enum.at(Enum.at(game[:cards], secondRow), secondCol), :complete, true)
 
     card2 =
       Enum.at(game[:cards], secondRow)
