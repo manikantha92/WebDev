@@ -34,7 +34,7 @@ fi
 
 mkdir -p ~/www/tasktracker
 REL_TAR=~/WebDev/hw06/tasktracker/_build/prod/rel/tasktracker/releases/0.0.1/tasktracker.tar.gz
-(cd ~/www/memory && tar xzvf $REL_TAR)
+(cd ~/www/tasktracker && tar xzvf $REL_TAR)
 
 crontab - <<CRONTAB
 @reboot bash /home/tasktracker/WebDev/hw06/tasktracker/start.sh
