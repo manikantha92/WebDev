@@ -27,7 +27,7 @@
     else
       "Deleted User"
     end %>
-  
+
   </li>
 
   <li>

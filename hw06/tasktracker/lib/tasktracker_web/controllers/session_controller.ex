@@ -25,3 +25,4 @@ defmodule TasktrackerWeb.SessionController do
     |> redirect(to: page_path(conn, :index))
   end
 end
+# attribution: Professor Nat's notes

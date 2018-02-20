@@ -28,11 +28,7 @@
     <p class="card-text">Time taken: <%= task.time %></p>
     <p class="card-text">Task Completed: <%= task.completed %></p>
     <p class="card-text">Assigned To:
-      <%= if task.assigned_to do
-      task.assigned_to
-      else
-        "Deleted User"
-      end %></p>
+      <%=  task.assigned_to %></p>
 
   </div>
 </div>

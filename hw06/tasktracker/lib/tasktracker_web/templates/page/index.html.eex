@@ -11,3 +11,5 @@
     <%= link "Register", to: user_path(@conn, :new) %>
   </div>
 <% end %>
+
+<!-- attribution: Professor Nat's notes from microblog app-->
