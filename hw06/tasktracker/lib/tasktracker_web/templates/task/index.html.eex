@@ -18,7 +18,11 @@
     <tr>
       <td><%= task.title %></td>
       <td><%= task.description %></td>
-      <td><%= task.assigned_to %></td>
+      <td><%= if @task.assigned_to do
+        @task.assigned_to
+      else
+        "Deleted User"
+      end %>></td>
       <td><%= task.completed %></td>
       <td><%= task.time %></td>
 
