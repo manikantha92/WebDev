@@ -1,4 +1,4 @@
-export PORT=5102
+export PORT=4000
 
 cd ~/www/tasktracker
 ./bin/tasktracker stop || true
