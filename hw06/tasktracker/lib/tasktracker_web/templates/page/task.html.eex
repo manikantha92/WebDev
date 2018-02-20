@@ -2,20 +2,37 @@
 
 <h1>Here are the tasks</h1>
 
+
 <%= Enum.map @tasks, fn task -> %>
-<div class="row">
-  <div class="col">
-    <div class="card">
-      <div class="card-body">
-        <h6 class="card-title">Task Title: <%= task.title %></h6>
-        <p>Task Description: <%= task.description %></p>
-        <p>Time taken: <%= task.time %></p>
-        <p>Task Completed: <%= task.completed %></p>
-        <p>Assigned To:<%= task.user.name %></p>
-        <span><%= link "Edit", to: task_path(@conn, :edit, task) %></span>
-        <span><%= link "Create", to: task_path(@conn, :new) %></span>
-      </div>
-    </div>
+<div class="card text-center">
+  <div class="card-header">
+    <ul class="nav nav-pills card-header-pills">
+      <li class="nav-item">
+      <a class="btn btn-primary" href="<%= task_path(@conn, :edit, task) %>">Edit</a>
+    </li>&nbsp; &nbsp;
+    <li class="nav-item">
+    <a class="btn btn-primary" href="<%= task_path(@conn, :new) %>">New Task</a>
+  </li>&nbsp; &nbsp;
+      <li class="nav-item">
+      <li>
+        <span>
+        <%= link "Delete", to: task_path(@conn, :delete, task), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
+      </li>
+    </li>
+
+    </ul>
+  </div>
+  <div class="card-block">
+    <h4 class="card-title">Task Title: <%= task.title %></h4>
+    <p class="card-text">Task Description: <%= task.description %></p>
+    <p class="card-text">Time taken: <%= task.time %></p>
+    <p class="card-text">Task Completed: <%= task.completed %></p>
+    <%= if Tasktracker.Accounts.get_user_by_email(task.assigned_to) do %>
+    <p class="card-text">Assigned To:<%= task.user.name %></p>
+          <% else %>
+          <td class="error">User Deleted</td>
+          <% end %>
   </div>
 </div>
+
 <% end %>

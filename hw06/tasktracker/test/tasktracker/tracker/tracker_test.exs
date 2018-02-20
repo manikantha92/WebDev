@@ -6,9 +6,9 @@ defmodule Tasktracker.TrackerTest do
   describe "tasks" do
     alias Tasktracker.Tracker.Task
 
-    @valid_attrs %{completed: true, description: "some description", time: 42, title: "some title"}
-    @update_attrs %{completed: false, description: "some updated description", time: 43, title: "some updated title"}
-    @invalid_attrs %{completed: nil, description: nil, time: nil, title: nil}
+    @valid_attrs %{assigned_to: "some assigned_to", completed: true, description: "some description", time: 42, title: "some title"}
+    @update_attrs %{assigned_to: "some updated assigned_to", completed: false, description: "some updated description", time: 43, title: "some updated title"}
+    @invalid_attrs %{assigned_to: nil, completed: nil, description: nil, time: nil, title: nil}
 
     def task_fixture(attrs \\ %{}) do
       {:ok, task} =
@@ -31,6 +31,7 @@ defmodule Tasktracker.TrackerTest do
 
     test "create_task/1 with valid data creates a task" do
       assert {:ok, %Task{} = task} = Tracker.create_task(@valid_attrs)
+      assert task.assigned_to == "some assigned_to"
       assert task.completed == true
       assert task.description == "some description"
       assert task.time == 42
@@ -45,6 +46,7 @@ defmodule Tasktracker.TrackerTest do
       task = task_fixture()
       assert {:ok, task} = Tracker.update_task(task, @update_attrs)
       assert %Task{} = task
+      assert task.assigned_to == "some updated assigned_to"
       assert task.completed == false
       assert task.description == "some updated description"
       assert task.time == 43

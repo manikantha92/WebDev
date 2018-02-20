@@ -22,7 +22,6 @@ defmodule Tasktracker.Tracker do
     |> Repo.preload(:user)
   end
 
-
   @doc """
   Gets a single task.
 
@@ -38,10 +37,9 @@ defmodule Tasktracker.Tracker do
 
   """
   def get_task!(id) do
-  Repo.get!(Task, id)
-  |> Repo.preload(:user)
-end
-
+    Repo.get!(Task, id)
+    |> Repo.preload(:user)
+  end
   @doc """
   Creates a task.
 

@@ -6,8 +6,9 @@ defmodule TasktrackerWeb.PageController do
   end
 
   def task(conn, _params) do
-  tasks = Tasktracker.Tracker.list_tasks()
-  changeset = Tasktracker.Tracker.change_task(%Tasktracker.Tracker.Task{})
-  render conn, "task.html", tasks: tasks, changeset: changeset
+tasks = Tasktracker.Tracker.list_tasks()
+changeset = Tasktracker.Tracker.change_task(%Tasktracker.Tracker.Task{user_id: conn.assigns[:current_user].id})
+render conn, "task.html", tasks: tasks, changeset: changeset
 end
+
 end

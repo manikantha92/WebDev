@@ -14,5 +14,7 @@
 
 </ul>
 
-<span><%= link "Edit", to: user_path(@conn, :edit, @user) %></span>
-<span><%= link "Back", to: user_path(@conn, :index) %></span>
+
+<span><a class="btn btn-primary" href="<%= user_path(@conn, :edit, @user) %>">Edit</a></span>
+<span><a class="btn btn-primary" href="<%= user_path(@conn, :index) %>">Back</a></span>
+<span><a class="btn btn-primary" href="/tasks">All Tasks</a></span>

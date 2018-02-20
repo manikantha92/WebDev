@@ -1,3 +1,4 @@
+
 <h2>Listing Tasks</h2>
 
 <table class="table">
@@ -5,6 +6,7 @@
     <tr>
       <th>Title</th>
       <th>Description</th>
+      <th>Assigned to</th>
       <th>Completed</th>
       <th>Time</th>
 
@@ -16,6 +18,7 @@
     <tr>
       <td><%= task.title %></td>
       <td><%= task.description %></td>
+      <td><%= task.assigned_to %></td>
       <td><%= task.completed %></td>
       <td><%= task.time %></td>
 
@@ -24,6 +27,7 @@
         <span><%= link "Edit", to: task_path(@conn, :edit, task), class: "btn btn-default btn-xs" %></span>
         <span><%= link "Delete", to: task_path(@conn, :delete, task), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
       </td>
+
     </tr>
 <% end %>
   </tbody>

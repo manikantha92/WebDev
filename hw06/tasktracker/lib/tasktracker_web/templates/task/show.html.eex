@@ -3,6 +3,14 @@
 <ul>
 
   <li>
+    <strong>Created By:</strong>
+    <%= if @task.user do
+      @task.user.name
+    else
+      "Deleted User"
+    end %>
+  </li>
+  <li>
     <strong>Title:</strong>
     <%= @task.title %>
   </li>
@@ -10,6 +18,16 @@
   <li>
     <strong>Description:</strong>
     <%= @task.description %>
+  </li>
+
+  <li>
+    <strong>Assigned to:</strong>
+    <%= if @task.assigned_to do
+      @task.assigned_to
+    else
+      "Deleted User"
+    end %>
+  
   </li>
 
   <li>
@@ -22,10 +40,6 @@
     <%= @task.time %>
   </li>
 
-  <li>
-    <strong>Assigned To:</strong>
-    <%= @task.user.name %>
-  </li>
 </ul>
 
 <span><%= link "Edit", to: task_path(@conn, :edit, @task) %></span>
