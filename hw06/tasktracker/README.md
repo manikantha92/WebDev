@@ -3,11 +3,12 @@
 * The application is a simple task tracker, to create tasks and assign it to individual.
 * A user has to register using his email here: http://tt.manikantha.in
 * Once a user has logged in he can view all the tasks.
-* A non-logged in user can only view tasks, he cannot create or edit them.
+* A non-logged in user can only view tasks, he cannot create, edit or delete them.
 * Once a user is logged in unless and until he clicks on logout his session will not end.
+* And he can view all the users by clicking on the view users button
 * A user once logged can edit, delete or create a new task.
 * The task page will show the existing tasks.
-* If he creates a new task he can assign it to any of the users available, the title and description of the task are mandatory fields.
+* If he creates a new task he can assign it to any of the users available, the title and description of  the task are mandatory fields.
 * By default the task is assigned to the user who is logged in.
 * If he wants to add a new user at the same time he can do that by clicking on the new user button.
 * Once a new user is added he can return to the tasks page by clicking on the All tasks button.

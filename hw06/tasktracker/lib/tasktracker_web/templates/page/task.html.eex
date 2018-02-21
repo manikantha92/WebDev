@@ -1,4 +1,11 @@
+<%= if @current_user do %>
+<span><%= button "View Users", to: user_path(@conn, :index), method: "get", class: "btn btn-primary" %></span>
+<% else %>
+<span><%= button "Login", to: page_path(@conn, :index), method: "get", class: "btn btn-primary" %></span>
+<% end %>
 
+
+<br><br>
 
 <h1>Here are the tasks</h1>
 
@@ -7,6 +14,7 @@
 <div class="card text-center">
   <div class="card-header">
     <ul class="nav nav-pills card-header-pills">
+      <%= if @current_user do %>
       <li class="nav-item">
       <a class="btn btn-primary" href="<%= task_path(@conn, :edit, task) %>">Edit</a>
     </li>&nbsp; &nbsp;
@@ -19,7 +27,7 @@
         <%= link "Delete", to: task_path(@conn, :delete, task), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
       </li>
     </li>
-
+<% end %>
     </ul>
   </div>
   <div class="card-block">
@@ -27,8 +35,8 @@
     <p class="card-text">Task Description: <%= task.description %></p>
     <p class="card-text">Time taken: <%= task.time %></p>
     <p class="card-text">Task Completed: <%= task.completed %></p>
-    <p class="card-text">Assigned To:
-      <%=  task.assigned_to %></p>
+    <p class="card-text">Task Assigned To: <%= task.assigned_to %></p>
+
 
   </div>
 </div>

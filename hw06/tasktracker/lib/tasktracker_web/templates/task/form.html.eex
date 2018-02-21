@@ -24,7 +24,7 @@
 
   <div class="form-group">
     <%= label f, :assigned_to, class: "control-label" %>
-     <%= select f, :assigned_to, @assigned, class: "form-control" %> <br />
+     <%= select f, :assigned_to, @assigned_to_users, class: "form-control" %> <br />
 
      <%= link "Add New User", to: user_path(@conn, :new), class: "btn btn-primary" %>
     <%= error_tag f, :assigned_to %>
