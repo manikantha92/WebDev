@@ -6,13 +6,13 @@
 use Mix.Config
 
 # General application configuration
-config :tasktracker2,
+config :tasktracker,
   ecto_repos: [Tasktracker.Repo]
 
 # Configures the endpoint
-config :tasktracker2, TasktrackerWeb.Endpoint,
+config :tasktracker, TasktrackerWeb.Endpoint,
   url: [host: "localhost"],
-  secret_key_base: "2APVIXi9ki2GhaB7KZTSKsoBo804jE7h75TkqG1JQSEhm0pjCdeKz+n1W/dxWyvu",
+  secret_key_base: "o8Vg+MCexGtlhMijZVIAYcmjts6X4OMwYWYiODEDnrXKbiB1rpxN23ze3mauoe6B",
   render_errors: [view: TasktrackerWeb.ErrorView, accepts: ~w(html json)],
   pubsub: [name: Tasktracker.PubSub,
            adapter: Phoenix.PubSub.PG2]
