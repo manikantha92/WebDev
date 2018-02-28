@@ -1,0 +1,6 @@
+<h2>Edit Timeblock</h2>
+<h6><strong> Task Title :</strong> <%= Tasktracker.Tracker.get_task(@current_task).title %></h6>
+
+<%= render "form.html", Map.put(assigns, :action, timeblocks_path(@conn, :update_timeblock, @timeblocks)) %>
+
+<span><%= link "Back", to: task_path(@conn, :show, Tasktracker.Tracker.get_task(@current_task)) %></span>
