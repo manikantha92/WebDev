@@ -12202,6 +12202,119 @@ require.register("js/app.js", function(exports, require, module) {
 
 require("phoenix_html");
 
+var _jquery = require("jquery");
+
+var _jquery2 = _interopRequireDefault(_jquery);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// Brunch automatically concatenates all files in your
+// watched paths. Those paths can be configured at
+// config.paths.watched in "brunch-config.js".
+//
+// However, those files will only be executed if
+// explicitly imported. The only exception are files
+// in vendor, which are never wrapped in imports and
+// therefore are always executed.
+
+// Import dependencies
+//
+// If you no longer want to use a dependency, remember
+// to also remove its path from "config.paths.watched".
+function update_buttons() {
+  (0, _jquery2.default)('.start-btn').each(function (_, bb) {
+    var id = (0, _jquery2.default)(bb).data('id');
+    if (id != "") {
+      (0, _jquery2.default)(bb).text("Stop");
+    } else {
+      (0, _jquery2.default)(bb).text("Start");
+    }
+  });
+}
+
+function set_button(task_id, id) {
+  (0, _jquery2.default)('.start-btn').each(function (_, bb) {
+    if (task_id == (0, _jquery2.default)(bb).data('task-id')) {
+      (0, _jquery2.default)(bb).data('id', id);
+    }
+  });
+  update_buttons();
+}
+
+function start(task_id, time) {
+  var text = JSON.stringify({
+    timeblocks: {
+      task_id: task_id,
+      start_time: time,
+      end_time: time,
+      flag: true
+    }
+  });
+
+  _jquery2.default.ajax(timeblocks_path, {
+    method: "post",
+    dataType: "json",
+    contentType: "application/json; charset=UTF-8",
+    data: text,
+    success: function success(resp) {
+      set_button(task_id, resp.data.id);
+    }
+
+  });
+}
+
+function stop(task_id, id, time) {
+
+  var text = JSON.stringify({
+    timeblocks: {
+      end_time: time,
+      flag: false
+    }
+  });
+
+  _jquery2.default.ajax(timeblocks_path + "/" + id, {
+    method: "put",
+    dataType: "json",
+    contentType: "application/json; charset=UTF-8",
+    data: text,
+    success: function success(resp) {
+      set_button(task_id, "");
+    }
+  });
+}
+
+function start_click(ev) {
+
+  var btn = (0, _jquery2.default)(ev.target);
+  var task_id = btn.data('task-id');
+  var id = btn.data('id');
+  var utc_time = new Date();
+
+  var time = new Date(utc_time.getTime() + -300 * 60 * 1000); // Attribution: https://itstillworks.com/convert-utc-date-eastern-time-5968840.html
+
+
+  if (id != "") {
+
+    stop(task_id, id, time);
+  } else {
+
+    start(task_id, time);
+  }
+}
+
+function init_start() {
+
+  if (!(0, _jquery2.default)('.start-btn')) {
+    return;
+  }
+
+  (0, _jquery2.default)('.start-btn').click(start_click);
+
+  update_buttons();
+}
+
+(0, _jquery2.default)(init_start);
+
 });
 
 require.register("js/socket.js", function(exports, require, module) {

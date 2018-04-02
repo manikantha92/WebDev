@@ -1,15 +1,19 @@
-<h1>Log In</h1>
-<!-- session_path(@conn, :create) -->
-<%= form_tag("/session", method: :post) do %>
-  <div class="form-group">
-    Email
-    <input type="email" name="email" placeholder="user@example.com" >
+<div class="row">
+  <div class="col">
+    <h1>TASK TRACKER V2</h1><br>
+    <h2>Log In</h2><br>
+   <!-- session_path(@conn, :create) -->
+   <%= form_tag(session_path(@conn, :create)) do %>
+     <div class="form-group">
+       Email
+       <input type="email" name="email" placeholder="user@example.com" >
+     </div>
+     <br>
+     <!-- passwords come later -->
+     <div class="form-group">
+       <button class="btn btn-primary">Log in</button>
+       <%= link "Register", to: user_path(@conn, :new) %>
+     </div>
+   <% end %>
   </div>
-  <!-- passwords come later -->
-  <div class="form-group">
-    <button class="btn btn-primary">Log in</button>
-    <%= link "Register", to: user_path(@conn, :new) %>
-  </div>
-<% end %>
-
-<!-- attribution: Professor Nat's notes from microblog app-->
+</div>

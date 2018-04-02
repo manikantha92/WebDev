@@ -70,4 +70,68 @@ defmodule Tasktracker.TrackerTest do
       assert %Ecto.Changeset{} = Tracker.change_task(task)
     end
   end
+
+  describe "timeblocks" do
+    alias Tasktracker.Tracker.Timeblocks
+
+    @valid_attrs %{end_time: ~N[2010-04-17 14:00:00.000000], flag: true, start_time: ~N[2010-04-17 14:00:00.000000]}
+    @update_attrs %{end_time: ~N[2011-05-18 15:01:01.000000], flag: false, start_time: ~N[2011-05-18 15:01:01.000000]}
+    @invalid_attrs %{end_time: nil, flag: nil, start_time: nil}
+
+    def timeblocks_fixture(attrs \\ %{}) do
+      {:ok, timeblocks} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Tracker.create_timeblocks()
+
+      timeblocks
+    end
+
+    test "list_timeblocks/0 returns all timeblocks" do
+      timeblocks = timeblocks_fixture()
+      assert Tracker.list_timeblocks() == [timeblocks]
+    end
+
+    test "get_timeblocks!/1 returns the timeblocks with given id" do
+      timeblocks = timeblocks_fixture()
+      assert Tracker.get_timeblocks!(timeblocks.id) == timeblocks
+    end
+
+    test "create_timeblocks/1 with valid data creates a timeblocks" do
+      assert {:ok, %Timeblocks{} = timeblocks} = Tracker.create_timeblocks(@valid_attrs)
+      assert timeblocks.end_time == ~N[2010-04-17 14:00:00.000000]
+      assert timeblocks.flag == true
+      assert timeblocks.start_time == ~N[2010-04-17 14:00:00.000000]
+    end
+
+    test "create_timeblocks/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Tracker.create_timeblocks(@invalid_attrs)
+    end
+
+    test "update_timeblocks/2 with valid data updates the timeblocks" do
+      timeblocks = timeblocks_fixture()
+      assert {:ok, timeblocks} = Tracker.update_timeblocks(timeblocks, @update_attrs)
+      assert %Timeblocks{} = timeblocks
+      assert timeblocks.end_time == ~N[2011-05-18 15:01:01.000000]
+      assert timeblocks.flag == false
+      assert timeblocks.start_time == ~N[2011-05-18 15:01:01.000000]
+    end
+
+    test "update_timeblocks/2 with invalid data returns error changeset" do
+      timeblocks = timeblocks_fixture()
+      assert {:error, %Ecto.Changeset{}} = Tracker.update_timeblocks(timeblocks, @invalid_attrs)
+      assert timeblocks == Tracker.get_timeblocks!(timeblocks.id)
+    end
+
+    test "delete_timeblocks/1 deletes the timeblocks" do
+      timeblocks = timeblocks_fixture()
+      assert {:ok, %Timeblocks{}} = Tracker.delete_timeblocks(timeblocks)
+      assert_raise Ecto.NoResultsError, fn -> Tracker.get_timeblocks!(timeblocks.id) end
+    end
+
+    test "change_timeblocks/1 returns a timeblocks changeset" do
+      timeblocks = timeblocks_fixture()
+      assert %Ecto.Changeset{} = Tracker.change_timeblocks(timeblocks)
+    end
+  end
 end

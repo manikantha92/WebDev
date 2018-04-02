@@ -21,10 +21,6 @@ defmodule Tasktracker.Accounts do
     Repo.all(User)
   end
 
-  def get_user_by_email(email) do
-    Repo.get_by(User, email: email)
-  end
-
   @doc """
   Gets a single user.
 
@@ -40,7 +36,6 @@ defmodule Tasktracker.Accounts do
 
   """
   def get_user!(id), do: Repo.get!(User, id)
-  def get_user(id), do: Repo.get(User, id)
 
   @doc """
   Creates a user.
@@ -106,4 +101,31 @@ defmodule Tasktracker.Accounts do
   def change_user(%User{} = user) do
     User.changeset(user, %{})
   end
+
+
+  # We want a non-bang variant
+  def get_user(id), do: Repo.get(User, id)
+
+  # And we want by-email lookup
+  def get_user_by_email(email) do
+    Repo.get_by(User, email: email)
+  end
+
+  # get all users who have given manager
+  def get_user_by_manager_id(id) do
+    Repo.all(
+      from m in User,
+        where: m.manager_id == ^id,
+        select: %{ name: m.name, email: m.email, id: m.id }
+        )
+  end
+
+  def get_id_by_manager_id(id) do
+    Repo.all(
+      from m in User,
+      where: m.manager_id == ^id,
+      select: m.id
+    )
+  end
+
 end
