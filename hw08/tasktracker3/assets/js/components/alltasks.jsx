@@ -1,7 +1,7 @@
 import React from 'react';
 import Task from './task';
 
-export default function Feed(params) {
+export default function AllTasks(params) {
   var tasks;
 
   if (params.editable) {

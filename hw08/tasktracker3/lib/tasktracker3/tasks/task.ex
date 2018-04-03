@@ -6,7 +6,7 @@ defmodule Tasktracker3.Tasks.Task do
   schema "tasks" do
     field :completed, :boolean, default: false
     field :description, :string
-    field :time, :integer
+    field :time, :integer, default: 0
     field :title, :string
     belongs_to :user, User
 

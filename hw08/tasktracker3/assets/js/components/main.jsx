@@ -5,7 +5,7 @@ import AllTasks from './alltasks';
 
 export default function Main(props) {
 
-    if (props.loggedin_user == null) {
+    if (props.token == null) {
       return (
         <div>
           hello
@@ -19,5 +19,5 @@ export default function Main(props) {
         </div>
       );
     }
-  
+
 }

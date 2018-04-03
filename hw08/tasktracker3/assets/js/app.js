@@ -12,8 +12,15 @@
 // If you no longer want to use a dependency, remember
 // to also remove its path from "config.paths.watched".
 import "phoenix_html"
+import store from './store';
+import api from './api';
 import tasktracker3_init from "./components/tasktracker";
 $(tasktracker3_init);
+$(function() {
+  api.request_tasks();
+  api.request_users();
+  tasktracker3_init(store);
+});
 
 // Import local files
 //
