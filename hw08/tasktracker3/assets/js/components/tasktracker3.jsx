@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Nav from './nav';
+import Main from './main';
 import AllTasks from './alltasks';
 import Users from './users';
 import TaskForm from './task-form';
@@ -62,8 +63,8 @@ class TaskTracker3 extends React.Component {
           } />
           <Route path="/users/:user_id" render={({match}) =>
             <AllTasks tasks={_.filter(this.state.tasks, (tt) =>
-              match.params.user_id == tt.user.id ) editable=true
-            } />
+              match.params.user_id == tt.user.id )} editable={true}
+             />
           } />
           <Route path="/tasks/:task_id" render={({match}) =>
             <UpdateTask task={_.find(this.state.tasks, (tt) =>

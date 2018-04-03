@@ -1,9 +1,10 @@
 import React from 'react';
 import TaskForm from './task-form';
+import NewTask from './newTask';
 import AllTasks from './alltasks';
 
 export default function Main(props) {
-  render() {
+
     if (props.loggedin_user == null) {
       return (
         <div>
@@ -14,9 +15,9 @@ export default function Main(props) {
       return (
         <div>
           <NewTask users={props.users} />
-          <AllTasks tasks={props.tasks} editable=false/>
+          <AllTasks tasks={props.tasks} editable={false} />
         </div>
       );
     }
-  }
+  
 }

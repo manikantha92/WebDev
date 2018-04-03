@@ -13,7 +13,7 @@ export default function UpdateTask(params) {
     </FormGroup>
     <FormGroup>
       <Label for="title">Title</Label>
-      <Input plaintext>{task.title}<Input />
+      <Input plaintext>{task.title}</Input>
     </FormGroup>
     <FormGroup>
       <Label for="description">Description</Label>
