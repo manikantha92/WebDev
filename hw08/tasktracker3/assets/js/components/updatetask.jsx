@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, FormGroup, Label, Input } from 'reactstrap';
 
-export default function TaskEdit(params) {
+export default function UpdateTask(params) {
 
   let task = params.task;
 
