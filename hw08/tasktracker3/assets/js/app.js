@@ -13,18 +13,17 @@
 // to also remove its path from "config.paths.watched".
 import "phoenix_html"
 import store from './store';
-import api from './api';
-import tasktracker3_init from "./components/tasktracker";
-$(tasktracker3_init);
-$(function() {
-  api.request_tasks();
-  api.request_users();
-  tasktracker3_init(store);
-});
-
 // Import local files
 //
 // Local files can be imported directly using relative
 // paths "./socket" or full ones "web/static/js/socket".
 
 // import socket from "./socket"
+import api from './api';
+
+import tasktracker_init from "./cs/tasktracker";
+$(function() {
+  api.request_tasks();
+  api.request_users();
+  tasktracker_init(store);
+});

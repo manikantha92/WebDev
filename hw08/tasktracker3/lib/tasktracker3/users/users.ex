@@ -37,21 +37,6 @@ defmodule Tasktracker3.Users do
   """
   def get_user!(id), do: Repo.get!(User, id)
 
-# Getting user name using email
- def get_user_by_email(email) do
-    Repo.get_by(User, email: email)
-  end
-
-def get_and_auth_user(email, password) do
-    user = get_user_by_email(email)
-
-    if user == nil do
-      nil
-    else
-      Comeonin.Argon2.check_pass(user, password)
-      
-    end
-  end
   @doc """
   Creates a user.
 
@@ -116,6 +101,14 @@ def get_and_auth_user(email, password) do
   def change_user(%User{} = user) do
     User.changeset(user, %{})
   end
-end
 
-# Attribution: # http://www.ccs.neu.edu/home/ntuck/courses/2018/01/cs4550/notes/17-passwords/notes.html
+
+  def get_and_auth_user(email, pass) do
+    user = Repo.one(from u in User, where: u.email == ^email)
+    case Comeonin.Argon2.check_pass(user, pass) do
+      {:ok, user} -> {:ok, user}
+      _else -> {:error, :not_found}
+    end
+  end
+
+end

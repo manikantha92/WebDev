@@ -1,1 +1,3 @@
-<div id="root">React app loading</div>
+<div id="root">
+  <p>React App Loading..</p>
+</div>

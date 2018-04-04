@@ -4,9 +4,9 @@ defmodule Tasktracker3Web.TaskControllerTest do
   alias Tasktracker3.Tasks
   alias Tasktracker3.Tasks.Task
 
-  @create_attrs %{completed: true, description: "some description", time: 42, title: "some title"}
-  @update_attrs %{completed: false, description: "some updated description", time: 43, title: "some updated title"}
-  @invalid_attrs %{completed: nil, description: nil, time: nil, title: nil}
+  @create_attrs %{complete: true, description: "some description", title: "some title", worktime: 42}
+  @update_attrs %{complete: false, description: "some updated description", title: "some updated title", worktime: 43}
+  @invalid_attrs %{complete: nil, description: nil, title: nil, worktime: nil}
 
   def fixture(:task) do
     {:ok, task} = Tasks.create_task(@create_attrs)
@@ -32,10 +32,10 @@ defmodule Tasktracker3Web.TaskControllerTest do
       conn = get conn, task_path(conn, :show, id)
       assert json_response(conn, 200)["data"] == %{
         "id" => id,
-        "completed" => true,
+        "complete" => true,
         "description" => "some description",
-        "time" => 42,
-        "title" => "some title"}
+        "title" => "some title",
+        "worktime" => 42}
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
@@ -54,10 +54,10 @@ defmodule Tasktracker3Web.TaskControllerTest do
       conn = get conn, task_path(conn, :show, id)
       assert json_response(conn, 200)["data"] == %{
         "id" => id,
-        "completed" => false,
+        "complete" => false,
         "description" => "some updated description",
-        "time" => 43,
-        "title" => "some updated title"}
+        "title" => "some updated title",
+        "worktime" => 43}
     end
 
     test "renders errors when data is invalid", %{conn: conn, task: task} do

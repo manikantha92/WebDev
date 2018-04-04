@@ -1,2 +1,73 @@
-/* This file is for your main application css. */
 @import "bootstrap";
+span {
+  color: green;
+  font-size: 15px;
+}
+
+#register{
+  background-color: #4CAF50; /* Green */
+      border: none;
+      color: white;
+      padding: 15px 32px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+}
+
+#login{
+  background-color: #4CAF50; /* Green */
+      border: none;
+      color: white;
+      padding: 15px 32px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+}
+
+#clear{
+  background-color: #008CBA; /* Green */
+      border: none;
+      color: white;
+      padding: 15px 32px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+}
+
+a {
+  color: red;
+}
+.span-padding {
+  padding-bottom: 5px;
+}
+.dcenter {
+  padding: 30px;
+}
+.floatr {
+  float: right;
+}
+
+.inline1 {
+  display: inline-block;
+}
+p {
+  font-size: 30px;
+  font-weight: italic;
+}
+.label1 {
+  width: 120px;
+}
+.links {
+  font-size: 20px;
+  border-style: none;
+}
+.head1 {
+  font-size: 27px;
+  font-weight: bold;
+}
+.p-white {
+  color: white;
+}

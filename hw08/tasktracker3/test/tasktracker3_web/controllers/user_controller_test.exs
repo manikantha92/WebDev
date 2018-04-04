@@ -4,9 +4,9 @@ defmodule Tasktracker3Web.UserControllerTest do
   alias Tasktracker3.Users
   alias Tasktracker3.Users.User
 
-  @create_attrs %{email: "some email", name: "some name", password_hash: "some password_hash"}
-  @update_attrs %{email: "some updated email", name: "some updated name", password_hash: "some updated password_hash"}
-  @invalid_attrs %{email: nil, name: nil, password_hash: nil}
+  @create_attrs %{email: "some email", name: "some name"}
+  @update_attrs %{email: "some updated email", name: "some updated name"}
+  @invalid_attrs %{email: nil, name: nil}
 
   def fixture(:user) do
     {:ok, user} = Users.create_user(@create_attrs)
@@ -33,8 +33,7 @@ defmodule Tasktracker3Web.UserControllerTest do
       assert json_response(conn, 200)["data"] == %{
         "id" => id,
         "email" => "some email",
-        "name" => "some name",
-        "password_hash" => "some password_hash"}
+        "name" => "some name"}
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
@@ -54,8 +53,7 @@ defmodule Tasktracker3Web.UserControllerTest do
       assert json_response(conn, 200)["data"] == %{
         "id" => id,
         "email" => "some updated email",
-        "name" => "some updated name",
-        "password_hash" => "some updated password_hash"}
+        "name" => "some updated name"}
     end
 
     test "renders errors when data is invalid", %{conn: conn, user: user} do

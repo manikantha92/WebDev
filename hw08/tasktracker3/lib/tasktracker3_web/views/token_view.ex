@@ -1,10 +1,11 @@
-defmodule TaskTracker3Web.TokenView do
-  use TaskTracker3Web, :view
+defmodule Tasktracker3Web.TokenView do
+  use Tasktracker3Web, :view
 
   def render("token.json", %{user: user, token: token}) do
     %{
       user_id: user.id,
-      token: token
+      user_name: user.name,
+      token: token,
     }
   end
 end

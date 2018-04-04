@@ -43,31 +43,31 @@ exports.config = {
   },
 
   // Configure your plugins
-  plugins: {
-    babel: {
-      // Do not use ES6 compiler in vendor code
-      ignore: [/vendor/],
-      presets: ['env', 'react']
+    plugins: {
+      babel: {
+        // Do not use ES6 compiler in vendor code
+        ignore: [/vendor/],
+        presets: ['env','react'],
+      },
+      sass: {
+        options: {
+          includePaths: ["node_modules/bootstrap/scss"],
+          precision: 8,
+        }
+      }
     },
-    sass: {
-      options: {
-        includePaths: ["node_modules/bootstrap/scss"],
-        precision: 8,
+
+    modules: {
+      autoRequire: {
+        "js/app.js": ["js/app"]
+      }
+    },
+
+    npm: {
+      enabled: true,
+      globals: {
+        _: 'underscore',
+        $: 'jquery'
       }
     }
-  },
-
-  modules: {
-    autoRequire: {
-      "js/app.js": ["js/app"]
-    }
-  },
-
-  npm: {
-    enabled: true,
-    globals: {
-      _: 'underscore',
-      $: 'jquery'
-    }
-  }
-};
+  };

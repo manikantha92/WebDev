@@ -17,10 +17,9 @@ defmodule Tasktracker3.Tasks do
       [%Task{}, ...]
 
   """
-  #preload all users
   def list_tasks do
     Repo.all(Task)
-    |> Repo.preload(:user)
+    |>Repo.preload(:assigned_to_user)
   end
 
   @doc """
@@ -36,13 +35,8 @@ defmodule Tasktracker3.Tasks do
       iex> get_task!(456)
       ** (Ecto.NoResultsError)
 
-
   """
-#preload user for task
-  def get_task!(id) do
-    Repo.get!(Task, id)
-    |> Repo.preload(:user)
-  end
+  def get_task!(id), do: Repo.get!(Task, id)|>Repo.preload(:assigned_to_user)
 
   @doc """
   Creates a task.
@@ -58,10 +52,8 @@ defmodule Tasktracker3.Tasks do
   """
   def create_task(attrs \\ %{}) do
     %Task{}
-    {:ok, task} = %Task{}
     |> Task.changeset(attrs)
     |> Repo.insert()
-    {:ok, Repo.preload(task, :user)}
   end
 
   @doc """

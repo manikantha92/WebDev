@@ -1,75 +1,151 @@
 import { createStore, combineReducers } from 'redux';
 import deepFreeze from 'deep-freeze';
 
+function tasks(state = [], action) {
+  switch (action.type) {
+ case 'TASKS_LIST':
+   return [...action.tasks];
+ case 'ADD_TASK':
+   return [action.task, ...state];
+  case 'DELETE_TASK':
+    return state.filter(task => task.id != action.id);
 
- function tasks(state = [], action) {
-   switch (action.type) {
-   case 'TASKS_LIST':
-     return [...action.tasks];
-   case 'ADD_TASK':
-     return [action.task, ...state];
-   default:
-     return state;
-   }
+ default:
+   return state;
  }
+}
 
- function users(state = [], action) {
-   switch (action.type) {
-   case 'USERS_LIST':
-     return [...action.users];
-   default:
-     return state;
-   }
+function users(state = [], action) {
+  switch (action.type) {
+ case 'USERS_LIST':
+   return [...action.users];
+ case 'ADD_USER':
+   return [action.user, ...state];
+   case 'DELETE_USER':
+     return state.filter(user => user.id != action.id);
+ default:
+   return state;
  }
+}
 
-let empty_new_task_form = {
-  user_id: "",
-  title: "",
-  description: "",
-  token: ""
+let empty_user_form = {
+  email: "",
+  name: "",
+  password: "",
+  password_confirmation: ""
 };
 
-function new_task_form(state = empty_new_task_form, action) {
+function form(state = empty_user_form, action) {
   switch (action.type) {
-    case 'UPDATE_NEW_TASK_FORM':
+    case 'UPDATE_FORM':
       return Object.assign({}, state, action.data);
-    case 'CLEAR_NEW_TASK_FORM':
-      return empty_form;
-    case 'SET_TOKEN':
-      return Object.assign({}, state, action.token);
+    case 'CLEAR_FORM':
+      return empty_user_form;
     default:
       return state;
   }
+}
+
+let default_user_errors = {
+  email: [""],
+  name: [""],
+  password: [""],
+  password_hash:[""],
+  password_confirmation: [""],
+  login: "",
+};
+
+function user_errors(state = default_user_errors, action) {
+  switch (action.type) {
+   case 'USER_FORM_ERROR':
+      return Object.assign({}, default_user_errors, action.errors);
+  case 'CLEAR_USER_ERROR':
+    return default_user_errors;
+   default:
+     return state;
+ }
 }
 
 function token(state = null, action) {
   switch (action.type) {
     case 'SET_TOKEN':
       return action.token;
+    case 'REMOVE_TOKEN':
+      return null;
     default:
       return state;
   }
 }
 
+
 let empty_login = {
   email: "",
-  password: ""
+  pass: "",
 };
 
 function login(state = empty_login, action) {
   switch (action.type) {
     case 'UPDATE_LOGIN_FORM':
       return Object.assign({}, state, action.data);
+    case 'CLEAR_LOGIN':
+      return empty_login;
+    default:
+      return state;
+  }
+}
+
+let empty_task = {
+  user_id: "",
+  title: "",
+  description: "",
+  assigned_to: "",
+  time: 0,
+  completed: false,
+};
+
+function new_task_form(state = empty_task, action) {
+  switch (action.type) {
+    case 'UPDATE_TASK_FORM':
+      return Object.assign({}, state, action.data);
+    case 'CLEAR_TASK_FORM':
+      return empty_task;
+    default:
+      return state;
+  }
+}
+
+function update_task_form(state = empty_task, action) {
+  switch (action.type) {
+    case 'UPDATE_EDITTASK_FORM':
+      return Object.assign({}, state, action.data);
+    default:
+      return state;
+  }
+}
+// TASK FORM Errors
+let default_task_errors = {
+  user_id: "",
+  title: "",
+  description: "",
+  assigned_to: "",
+  time: "",
+  completed: "",
+};
+
+function task_errors(state = default_task_errors, action) {
+  switch (action.type) {
+    case 'TASK_FORM_ERROR':
+      return Object.assign({}, default_task_errors, action.errors);
+    case 'CLEAR_TASK_ERROR':
+      return default_task_errors;
     default:
       return state;
   }
 }
 
 function root_reducer(state0, action) {
-  console.log("reducer", action);
-  // {tasks, users, form} is ES6 shorthand for
-  // {tasks: tasks, users: users, form: form}
-  let reducer = combineReducers({tasks, users, new_task_form, token, login});
+
+  let reducer = combineReducers({tasks, users, form, user_errors, token, login, new_task_form, task_errors, update_task_form});
   let state1 = reducer(state0, action);
   console.log("state1", state1);
   return deepFreeze(state1);

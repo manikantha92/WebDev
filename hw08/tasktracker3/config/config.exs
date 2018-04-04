@@ -12,7 +12,7 @@ config :tasktracker3,
 # Configures the endpoint
 config :tasktracker3, Tasktracker3Web.Endpoint,
   url: [host: "localhost"],
-  secret_key_base: "FvVaLlQGeNy9uytCtFknfCNkSj6FD5w/L0QCYhcFTvRyMQysgIbZkTlLAt8lI7nx",
+  secret_key_base: "WHe1QylGHFyCOyZ7eOTYAZs4VFdGDPwCbB7vRaQ7MV70kz7FFdVzD3zmr+8MFvXf",
   render_errors: [view: Tasktracker3Web.ErrorView, accepts: ~w(html json)],
   pubsub: [name: Tasktracker3.PubSub,
            adapter: Phoenix.PubSub.PG2]

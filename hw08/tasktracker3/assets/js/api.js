@@ -1,5 +1,71 @@
 import store from './store';
+
 class TheServer {
+
+  submit_login(data) {
+      $.ajax("/api/v1/token", {
+        method: "post",
+        dataType: "json",
+        contentType: "application/json; charset=UTF-8",
+        data: JSON.stringify(data),
+        success: (resp) => {
+          store.dispatch({
+            type: 'SET_TOKEN',
+            token: resp,
+          });
+        },
+        error: (resp) => {
+          store.dispatch({
+            type: 'USER_FORM_ERROR',
+            errors: {login: 'Invalid Email Or Password'}
+          })
+        },
+      });
+    }
+
+  request_tasks() {
+    $.ajax("/api/v1/tasks", {
+      method: "get",
+      dataType: "json",
+      contentType: "application/json; charset=UTF-8",
+      success: (resp) => {
+        store.dispatch({
+          type: 'TASKS_LIST',
+          tasks: resp.data,
+        });
+      },
+    });
+  }
+
+  delete_task(id) {
+    $.ajax("/api/v1/tasks/"+id, {
+      method: "delete",
+      dataType: "json",
+      contentType: "application/json; charset=UTF-8",
+      success: (resp) => {
+        console.log("DELETED"+id);
+        store.dispatch({
+          type: 'DELETE_TASK',
+          id: id,
+        });
+      },
+    });
+  }
+
+  delete_user(id) {
+    $.ajax("/api/v1/users/"+id, {
+      method: "delete",
+      dataType: "json",
+      contentType: "application/json; charset=UTF-8",
+      success: (resp) => {
+        console.log("DELETED"+id);
+        store.dispatch({
+          type: 'DELETE_USER',
+          id: id,
+        });
+      },
+    });
+  }
 
   request_users() {
     $.ajax("/api/v1/users", {
@@ -15,52 +81,119 @@ class TheServer {
     });
   }
 
-  request_tasks() {
-    $.ajax("/api/v1/tasks", {
-      method: "get",
+
+  register_user(data) {
+    $.ajax("/api/v1/users", {
+      method: "post",
       dataType: "json",
       contentType: "application/json; charset=UTF-8",
+      data: JSON.stringify({ user: data }),
       success: (resp) => {
+        alert("User added!");
         store.dispatch({
-          type: 'TASKS_LIST',
-          posts: resp.data,
+          type: 'ADD_USER',
+          user: resp.data,
+        });
+        store.dispatch({
+          type: 'CLEAR_FORM'
+        });
+        store.dispatch({
+          type: 'CLEAR_USER_ERROR'
+        });
+      },
+      error: (resp) => {
+        store.dispatch({
+          type: 'USER_FORM_ERROR',
+          errors: resp.responseJSON.errors,
         });
       },
     });
   }
 
-
-  submit_task(data) {
+  create_task(data) {
     $.ajax("/api/v1/tasks", {
       method: "post",
       dataType: "json",
       contentType: "application/json; charset=UTF-8",
-      data: JSON.stringify({ token: data.token, task: data }),
+      data: JSON.stringify({ task: data }),
       success: (resp) => {
+        alert("Task Created!");
         store.dispatch({
           type: 'ADD_TASK',
-          post: resp.data,
+          task: resp.data,
+        });
+        store.dispatch({
+          type: 'CLEAR_TASK_FORM'
+        });
+        store.dispatch({
+          type: 'CLEAR_TASK_ERROR'
+        });
+      },
+      error: (resp) => {
+        console.log(resp);
+        store.dispatch({
+          type: 'TASK_FORM_ERROR',
+          errors: resp.responseJSON.errors,
         });
       },
     });
   }
 
-  submit_login(data) {
-    $.ajax("/api/v1/token", {
-      method: "post",
+  update_task(data, id) {
+    $.ajax("/api/v1/tasks/"+id, {
+      method: "put",
       dataType: "json",
       contentType: "application/json; charset=UTF-8",
-      data: JSON.stringify(data),
+      data: JSON.stringify({ task: data }),
       success: (resp) => {
+        alert("Task updated!");
         store.dispatch({
-          type: 'SET_TOKEN',
-          token: resp,
+          type: 'DELETE_TASK',
+          id: id,
+        });
+        store.dispatch({
+          type: 'ADD_TASK',
+          task: resp.data,
+        });
+      },
+      error: (resp) => {
+        console.log(resp);
+        store.dispatch({
+          type: 'TASK_FORM_ERROR',
+          errors: resp.responseJSON.errors,
         });
       },
     });
   }
+  update_task(data, id) {
+    $.ajax("/api/v1/tasks/"+id, {
+      method: "put",
+      dataType: "json",
+      contentType: "application/json; charset=UTF-8",
+      data: JSON.stringify({ task: data }),
+      success: (resp) => {
+        alert("Task updated!");
+        store.dispatch({
+          type: 'DELETE_TASK',
+          id: id,
+        });
+        store.dispatch({
+          type: 'ADD_TASK',
+          task: resp.data,
+        });
+      },
+      error: (resp) => {
+        console.log(resp);
+        store.dispatch({
+          type: 'TASK_FORM_ERROR',
+          errors: resp.responseJSON.errors,
+        });
+      },
+    });
+  }
+
+
 }
 
 export default new TheServer();
-
 //Attribution: https://github.com/NatTuck/microblog-spa/blob/lec20-end/assets/js/api.js
